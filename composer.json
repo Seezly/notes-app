@@ -1,0 +1,25 @@
+{
+    "scripts": {
+        "test": "vendor/bin/pest"
+    },
+    "require": {
+        "firebase/php-jwt": "^7.0",
+        "dotenv-org/phpdotenv-vault": "^0.2.4",
+        "illuminate/collections": "^12.51"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "App\\": "app/",
+            "Http\\": "Http/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
