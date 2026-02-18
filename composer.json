@@ -1,5 +1,6 @@
 {
     "scripts": {
+        "dev": "php -S localhost:8000 -t public",
         "test": "vendor/bin/pest"
     },
     "require": {
