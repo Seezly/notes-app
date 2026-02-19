@@ -30,6 +30,10 @@ class Note
 
         $sql = "SELECT * FROM notes WHERE user_id = :user_id";
 
+        if (!Auth::isAdmin()) {
+            $sql .= " AND deleted_at NOT NULL";
+        }
+
         if ($id !== null) {
             header('Content-Type: application/json');
             $sql .= " AND id = :id";
@@ -80,8 +84,9 @@ class Note
     public static function delete($connection, $id)
     {
         header('Content-Type: application/json');
-        $sql = "DELETE FROM notes WHERE id = :id AND user_id = :user_id";
+        $sql = "UPDATE notes SET deleted_at = :date WHERE id = :id AND user_id = :user_id";
         $note = $connection->delete($sql, [
+            'date' => date_create(),
             'id' => $id,
             'user_id' => Auth::user(),
         ]);
