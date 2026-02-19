@@ -5,8 +5,6 @@ namespace App\Services;
 class Statistics
 {
     protected $connection;
-    protected $table;
-    protected $secondTable;
 
     public function __construct($connection)
     {
@@ -29,6 +27,91 @@ class Statistics
             'before_first_period_value' => $data[0]["{$table}_before_first_period"],
             'percentage' => ($data[0]["total_{$table}"] > 0) ? round((($data[0]["{$table}_first_period"] - $data[0]["{$table}_before_first_period"]) / $data[0]["total_{$table}"]) * 100, 2) : 0,
             'trend' => ($data[0]["{$table}_first_period"] >= $data[0]["{$table}_before_first_period"]) ? 'up' : 'down',
+            'period' => $first_period,
+            'period_unit' => $period_unit
+        ];
+    }
+
+    public function getTableAvg($title, $table, $table_two, $first_period = '7', $second_period = '14', $period_unit = 'DAY')
+    {
+        $sql = "
+            (SELECT
+            (SELECT AVG({$table}_count) AS avg_{$table}
+            FROM (
+                SELECT COUNT(n.id) AS {$table}_count
+                FROM $table_two u
+                LEFT JOIN $table n ON u.id = n.user_id
+                GROUP BY u.id
+            ) AS sub) AS avg,
+            (SELECT AVG({$table}_count) AS avg_{$table}_first_period
+            FROM (
+                SELECT COUNT(n.id) AS {$table}_count
+                FROM $table_two u
+                LEFT JOIN $table n ON u.id = n.user_id
+                WHERE n.created_at >= DATE_SUB(NOW(), INTERVAL $first_period $period_unit)
+                GROUP BY u.id
+            ) AS sub) AS avg_first_period,
+            (SELECT AVG({$table}_count) AS avg_{$table}_before_first_period
+            FROM (
+                SELECT COUNT(n.id) AS {$table}_count
+                FROM $table_two u
+                LEFT JOIN $table n ON u.id = n.user_id
+                WHERE n.created_at < DATE_SUB(NOW(), INTERVAL $first_period $period_unit) AND n.created_at >= DATE_SUB(NOW(), INTERVAL $second_period $period_unit)
+                GROUP BY u.id
+            ) AS sub) AS avg_before_first_period)
+        ";
+
+        $data = $this->connection->query($sql)->getAll();
+
+        return [
+            'title' => $title,
+            'value' => number_format($data[0]["avg"], 2) ?? null,
+            'first_period_value' => $data[0]["avg_first_period"] ?? null,
+            'before_first_period_value' => $data[0]["avg_before_first_period"] ?? null,
+            'percentage' => ($data[0]["avg"] > 0) ? round((($data[0]["avg_first_period"] - $data[0]["avg_before_first_period"]) / $data[0]["avg"]) * 100, 2) : 0,
+            'trend' => ($data[0]["avg_first_period"] >= $data[0]["avg_before_first_period"]) ? 'up' : 'down',
+            'period' => $first_period,
+            'period_unit' => $period_unit
+        ];
+    }
+
+    public function getPercentageData($title, $table, $table_two, $first_period = '7', $second_period = '14', $period_unit = 'DAY')
+    {
+        $sql = "
+            (SELECT
+            (SELECT 
+                (COUNT(DISTINCT n.user_id) * 100.0 / COUNT(DISTINCT u.id)) 
+                AS percentage_{$table}_with_{$table_two}
+            FROM {$table} u
+            LEFT JOIN {$table_two} n ON u.id = n.user_id) AS percentage_{$table}_with_{$table_two},
+            (SELECT 
+                (COUNT(DISTINCT n.user_id) * 100.0 / COUNT(DISTINCT u.id)) 
+                AS percentage_{$table}_with_{$table_two}
+            FROM {$table} u
+            LEFT JOIN {$table_two} n ON u.id = n.user_id
+            WHERE n.created_at >= DATE_SUB(NOW(), INTERVAL $first_period $period_unit)
+            GROUP BY u.id
+            ) AS percentage_{$table}_with_{$table_two}_fp,
+            (SELECT 
+                (COUNT(DISTINCT n.user_id) * 100.0 / COUNT(DISTINCT u.id)) 
+                AS percentage_{$table}_with_{$table_two}
+            FROM {$table} u
+            LEFT JOIN {$table_two} n ON u.id = n.user_id
+            WHERE n.created_at < DATE_SUB(NOW(), INTERVAL $first_period $period_unit) AND n.created_at >= DATE_SUB(NOW(), INTERVAL $second_period $period_unit)
+            GROUP BY u.id
+            ) AS percentage_{$table}_with_{$table_two}_bfp
+            )
+        ";
+
+        $data = $this->connection->query($sql)->getAll();
+
+        return [
+            'title' => $title,
+            'value' => number_format($data[0]["percentage_{$table}_with_{$table_two}"], 2) ?? null,
+            'first_period_value' => $data[0]["percentage_{$table}_with_{$table_two}_fp"] ?? null,
+            'before_first_period_value' => $data[0]["percentage_{$table}_with_{$table_two}_bfp"] ?? null,
+            'percentage' => ($data[0]["percentage_{$table}_with_{$table_two}"] > 0) ? round((($data[0]["percentage_{$table}_with_{$table_two}_fp"] - $data[0]["percentage_{$table}_with_{$table_two}_bfp"]) / $data[0]["avg"]) * 100, 2) : 0,
+            'trend' => ($data[0]["percentage_{$table}_with_{$table_two}_fp"] >= $data[0]["percentage_{$table}_with_{$table_two}_bfp"]) ? 'up' : 'down',
             'period' => $first_period,
             'period_unit' => $period_unit
         ];
