@@ -1,14 +1,5 @@
 <?php
 
-function StatsCard($data)
-{
-    echo "<div class='bg-white rounded-lg shadow-md p-4 mb-4'>
-            <h2 class='text-lg font-semibold mb-2'>{$data['title']}</h2>
-            <p class='text-gray-700'>{$data['value']}</p>
-            <small class='text-gray-500'>{$data['percentage']}% {$data['trend']} in the last {$data['period']} {$data['period_unit']}</small>
-        </div>";
-}
-
 function NoteCard($notes)
 {
     $priority_class = [

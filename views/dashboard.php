@@ -3,7 +3,7 @@
 require_once asset('views/partials/head.php');
 require_once asset('views/components/nav.php');
 require_once asset('views/components/header.php');
-require_once asset('views/components/card.php');
+require_once asset('views/components/note_card.php');
 
 ?>
 

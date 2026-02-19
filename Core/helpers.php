@@ -51,3 +51,16 @@ function abort($code = 404)
         echo "Error {$code}";
     }
 }
+
+function coordinates($array)
+{
+    $coordinates = [];
+
+    if ($array ?? null) {
+        foreach ($array as $item) {
+            $coordinates[] = ['x' => $item['day'], 'y' => $item['count']];
+        }
+    }
+
+    return $coordinates;
+}
