@@ -18,4 +18,13 @@ class Validator
     {
         return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
     }
+
+    public static function equal($value, $compare)
+    {
+        if ($value !== $compare) {
+            return false;
+        }
+
+        return true;
+    }
 }

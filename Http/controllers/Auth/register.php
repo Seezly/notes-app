@@ -2,6 +2,9 @@
 
 use App\Middlewares\Auth;
 
+use App\Forms\RegisterForm;
+use Core\Session;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attributes = [
         'name' => $_POST['name'],
@@ -11,12 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'token' => $_POST['csrf_token']
     ];
 
-    if ($attributes['password'] !== $attributes['confirm_password']) {
-        return view('register', [
-            'title' => 'Register',
-            'error' => 'Passwords do not match'
-        ]);
-    }
+    $form = (new RegisterForm($attributes))
+        ->validate($attributes);
 
     $auth = (new Auth($connection))
         ->register(
@@ -27,16 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             false
         );
 
-    if ($user) {
-        redirect('/dashboard');
-    } else {
-        return view('register', [
-            'title' => 'Register',
-            'error' => 'Registration failed'
-        ]);
+    if (!$auth) {
+        $form
+            ->addError("registration", "Registration failed. Please try again later.")
+            ->throwIfNotValid();
     }
+
+    return redirect('/dashboard', 201);
 }
 
 return view('register', [
-    'title' => 'Register'
+    'title' => 'Register',
+    'errors' => Session::get('errors') ?? [],
+    'old' => Session::get('old') ?? []
 ]);
