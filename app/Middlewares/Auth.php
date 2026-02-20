@@ -5,6 +5,7 @@ namespace App\Middlewares;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Core\Session;
+use Core\Log;
 
 class Auth
 {
@@ -75,6 +76,8 @@ class Auth
 
         Session::renewCsrf();
 
+        Log::create($this->connection, 'login', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
+
         return $user;
     }
 
@@ -97,6 +100,8 @@ class Auth
             'password' => password_hash($password, PASSWORD_BCRYPT),
             'is_admin' => $is_admin ? 1 : 0,
         ]);
+
+        Log::create($this->connection, 'register', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
 
         return $this->login($email, $password, $token);
     }

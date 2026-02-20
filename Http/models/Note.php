@@ -4,6 +4,7 @@ namespace Http\Models;
 
 use App\Middlewares\Auth;
 use Core\Session;
+use Core\Log;
 
 class Note
 {
@@ -46,20 +47,13 @@ class Note
 
         Session::renewCsrf();
 
+        Log::create($connection, 'add', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
+
         exit();
     }
 
-    public static function get($connection, $id = null, $token)
+    public static function get($connection, $id = null)
     {
-
-        if (!Session::validateCsrf($token)) {
-            http_response_code(403);
-            echo json_encode([
-                'success' => false,
-                'data' => 'Invalid CSRF Token'
-            ]);
-            exit();
-        }
 
         if (!Auth::user()) {
             http_response_code(403);
@@ -73,9 +67,9 @@ class Note
         $sql = "SELECT * FROM notes WHERE user_id = :user_id";
 
         if (!Auth::isAdmin()) {
-            $sql .= " AND deleted_at NULL";
+            $sql .= " AND deleted_at IS NULL";
         } else {
-            $sql .= " AND deleted_at NOT NULL";
+            $sql .= " AND deleted_at IS NOT NULL";
         }
 
         if ($id !== null) {
@@ -101,6 +95,8 @@ class Note
         http_response_code(200);
 
         Session::renewCsrf();
+
+        Log::create($connection, 'get', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
 
         return json_encode([
             'success' => $note ? true : false,
@@ -147,6 +143,8 @@ class Note
 
         Session::renewCsrf();
 
+        Log::create($connection, 'edit', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
+
         exit();
     }
 
@@ -185,6 +183,8 @@ class Note
         ]);
 
         Session::renewCsrf();
+
+        Log::create($connection, 'delete', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
 
         exit();
     }
