@@ -7,7 +7,8 @@ use Core\Session;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attributes = [
         'email' => $_POST['email'],
-        'password' => $_POST['password']
+        'password' => $_POST['password'],
+        'token' => $_POST['csrf_token']
     ];
 
     $form = (new LoginForm($attributes))
@@ -16,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auth = (new Auth($connection))
         ->login(
             $attributes['email'],
-            $attributes['password']
+            $attributes['password'],
+            $attributes['csrf_token']
         );
 
     if (!$auth) {

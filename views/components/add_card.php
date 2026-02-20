@@ -15,6 +15,7 @@
                             <h3 id="dialog-title" class="text-base font-semibold text-white">Add New Note</h3>
                             <form id="save-note-form" class="mt-6 gap-3 flex flex-col w-full">
                                 <input type="hidden" name="_method" value="POST">
+                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                 <input type="text" name="name" id="name" placeholder="Note Title" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                                 <input type="date" name="date" id="date" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                                 <select name="priority" id="priority" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-500">

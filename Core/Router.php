@@ -67,4 +67,9 @@ class Router
         }
         abort();
     }
+
+    public function limit($maxRequests = 10, $minutes = 1, $limitBy = 'ip')
+    {
+        return;
+    }
 }

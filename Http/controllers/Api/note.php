@@ -4,7 +4,7 @@ use Http\Models\Note;
 
 switch ($method) {
     case 'GET':
-        return Note::get($connection, $_GET['id'] ?? null);
+        return Note::get($connection, $_GET['id'] ?? null, $_GET['csrf_token']);
         break;
 
     case 'POST':
@@ -12,7 +12,7 @@ switch ($method) {
         break;
 
     case 'DELETE':
-        return Note::delete($connection, json_decode(file_get_contents('php://input'), true)['id']);
+        return Note::delete($connection, json_decode(file_get_contents('php://input'), true)['id'], json_decode(file_get_contents('php://input'), true)['csrd_token']);
         break;
 
     case 'PUT':
@@ -24,6 +24,6 @@ switch ($method) {
         break;
 
     default:
-        return Note::get($connection, $_GET['id'] ?? null);
+        return Note::get($connection, $_GET['id'] ?? null, $_GET['csrf_token']);
         break;
 }

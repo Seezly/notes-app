@@ -10,6 +10,8 @@ use Core\Database;
 use Core\Router;
 use Core\Session;
 
+Session::start();
+
 $connection = new Database('localhost', 'root', '', 'notes_app');
 
 $router = new Router();
@@ -18,8 +20,6 @@ $uri = getURI();
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 require asset('routes/web.php');
-
-Session::start();
 
 try {
     $router->route($uri, $method, $connection);

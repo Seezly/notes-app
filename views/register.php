@@ -2,7 +2,6 @@
 
 require_once asset('views/partials/head.php');
 require_once asset('views/components/nav.php');
-
 ?>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,6 +13,7 @@ require_once asset('views/components/nav.php');
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form action="/register" method="POST" class="space-y-6">
             <input type="hidden" name="_method" value="POST">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <div>
                 <label for="name" class="block text-sm/6 font-medium text-gray-100">Name</label>
                 <div class="mt-2">

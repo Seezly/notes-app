@@ -4,6 +4,7 @@ namespace App\Middlewares;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Core\Session;
 
 class Auth
 {
@@ -32,8 +33,18 @@ class Auth
         }
     }
 
-    public function login($email, $password)
+    public function login($email, $password, $token)
     {
+
+        if (!Session::validateCsrf($token)) {
+            http_response_code(403);
+            echo json_encode([
+                'success' => false,
+                'data' => 'Invalid CSRF Token'
+            ]);
+            exit();
+        }
+
         $sql = "SELECT * FROM users WHERE email = :email";
         $user = $this->connection->query($sql, [
             'email' => $email,
@@ -62,11 +73,23 @@ class Auth
 
         setcookie('token', $token, time() + (86400 * 30), "/");
 
+        Session::renewCsrf();
+
         return $user;
     }
 
-    public function register($username, $email, $password, $is_admin = false)
+    public function register($username, $email, $password, $token, $is_admin = false)
     {
+
+        if (!Session::validateCsrf($token)) {
+            http_response_code(403);
+            echo json_encode([
+                'success' => false,
+                'data' => 'Invalid CSRF Token'
+            ]);
+            exit();
+        }
+
         $sql = "INSERT INTO users (username, email, password, is_admin) VALUES (:username, :email, :password, :is_admin)";
         $this->connection->query($sql, [
             'username' => $username,
@@ -75,13 +98,15 @@ class Auth
             'is_admin' => $is_admin ? 1 : 0,
         ]);
 
-        return $this->login($email, $password);
+        return $this->login($email, $password, $token);
     }
 
     public static function logout()
     {
         unset($_COOKIE['token']);
         setcookie('token', '', time() - 3600, "/");
+
+        Session::renewCsrf();
 
         redirect('/login');
     }
