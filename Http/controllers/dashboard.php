@@ -1,10 +1,11 @@
 <?php
 
 use Http\Models\Note;
+use App\Middlewares\Auth;
 
-$notes = json_decode(Note::get($connection), true)['data'] ?? [];
+$data = json_decode(Note::get($connection, params: $_GET), true)['data'] ?? [];
 
 return view('dashboard', [
     'title' => 'Dashboard',
-    'notes' => $notes
+    'data' => $data
 ]);

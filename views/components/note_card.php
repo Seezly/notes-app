@@ -7,20 +7,23 @@ function NoteCard($notes)
         'medium' => 'bg-yellow-100 text-yellow-800',
         'high' => 'bg-red-100 text-red-800',
     ];
+    echo "<div class='flex justify-between items-center gap-8'>";
     foreach ($notes as $note) {
-        echo "<div class='bg-white rounded-lg shadow-md p-4 mb-4'>
-                <div class='flex items-center justify-between mb-2'>
-                    <span class='text-sm text-gray-500'>{$note['date']}</span>
-                    <h2 class='text-lg font-semibold'>{$note['name']}</h2>
-                    <span class='inline-block px-2 py-1 text-xs font-semibold rounded-full {$priority_class[$note['priority']]}'>{$note['priority']}</span>
-                </div>
-                <div class='mt-2'>
-                    <p class='text-gray-700'>{$note['body']}</p>
-                </div>
-                <div class='mt-4 flex space-x-2'>
-                    <button command='show-modal' commandfor='dialog' class='bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-2 rounded' data-id='{$note['id']}' data-action='edit'>Edit</button>
-                    <button command='show-modal' commandfor='delete-note-confirm' class='bg-red-500 hover:bg-red-700 text-white font-medium py-1 px-2 rounded' data-id='{$note['id']}'>Delete</button>
-                </div>
-            </div>";
+        echo "
+                <div class='bg-white w-full sm:max-w-[30%] rounded-lg shadow-md p-4 mb-4'>
+                    <div class='flex items-center justify-between mb-2'>
+                        <span class='text-sm text-gray-500'>" . (htmlspecialchars(date_format(date_create($note['date']), "m-d-Y")) ?? date('yyyy-mm-dd')) . "</span>
+                        <h2 class='text-lg font-semibold'>" . (htmlspecialchars($note['name']) ?? '') . "</h2>
+                        <span class='inline-block px-2 py-1 text-xs font-semibold rounded-full " . ($priority_class[htmlspecialchars($note['priority'])] ?? "bg-green-100 text-green-800") . "'> " . htmlspecialchars($note['priority']) . "</span>
+                    </div>
+                    <div class='mt-2'>
+                        <p class='text-gray-700'>" . (htmlspecialchars($note['body']) ?? '') . "</p>
+                    </div>
+                    <div class='mt-4 flex space-x-2'>
+                        <button command='show-modal' commandfor='dialog' class='bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($note['id']) . "' data-action='edit'>Edit</button>
+                        <button command='show-modal' commandfor='delete-note-confirm' class='bg-red-500 hover:bg-red-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($note['id']) . "'>Delete</button>
+                    </div>
+                </div>";
     }
+    echo "</div>";
 }
