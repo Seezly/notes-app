@@ -22,11 +22,13 @@ use App\Middlewares\Auth;
                             <a href="/admin" <?= getURI() === '/admin' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/admin' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Admin</a>
                             <a href="/notes" <?= getURI() === '/notes' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/notes' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Notes</a>
                             <a href="/users" <?= getURI() === '/users' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/users' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Users</a>
+                            <a href="/tags" <?= getURI() === '/tags' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/tags' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Tags</a>
                         </div>
                     <?php else : ?>
                         <div class="ml-10 flex items-baseline space-x-4">
                             <a href="/dashboard" <?= getURI() === '/dashboard' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/dashboard' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Dashboard</a>
                             <a href="/notes" <?= getURI() === '/notes' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/notes' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Notes</a>
+                            <a href="/tags" <?= getURI() === '/tags' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/tags' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Tags</a>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -47,7 +49,6 @@ use App\Middlewares\Auth;
                         <div class="relative ml-3 flex gap-x-3">
                             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-8 rounded-full outline -outline-offset-1 outline-white/10" />
                             <a href="/profile" <?= getURI() === '/profile' ? 'aria-current="page"' : '' ?> class="rounded-md <?= getURI() === '/profile' ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' ?> px-3 py-2 text-sm font-medium">Profile</a>
-                            <a href="#" class="rounded-md text-gray-300 hover:bg-white/5 hover:text-white px-3 py-2 text-sm font-medium" id="user-menu-item-1">Settings</a>
                             <form action="/logout" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="rounded-md text-gray-300 hover:bg-white/5 hover:text-white px-3 py-2 text-sm font-medium" id="user-menu-item-2">Sign out</button>

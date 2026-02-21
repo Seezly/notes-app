@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Forms;
+
+use App\Exceptions\ValidationException;
+use Core\Validator;
+
+class NoteForm extends Validator
+{
+    protected $errors;
+    public $attributes;
+
+    public function __construct($attributes)
+    {
+        $this->attributes = $attributes;
+
+        if (!Validator::string($attributes['name'], 1, 100)) {
+            $this->errors['name'] = 'Name must be a string between 1 and 100 characters.';
+        }
+
+        if (!Validator::date($attributes['date'])) {
+            $this->errors['date'] = 'Date must be a valid date.';
+        }
+
+        if (!Validator::string($attributes['body'], 1, 500)) {
+            $this->errors['body'] = 'Body must be a string between 1 and 500 characters.';
+        }
+    }
+
+    public static function validate($attributes)
+    {
+        $instance = new static($attributes);
+
+        return $instance->isValid() ? $instance : $instance->throwIfNotValid();
+    }
+
+    public function throwIfNotValid()
+    {
+        if (!$this->isValid()) {
+            throw (new ValidationException)->throw($this->getErrors(), $this->attributes);
+        }
+    }
+
+    public function isValid()
+    {
+        return empty($this->errors);
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function addError($field, $message)
+    {
+        $this->errors[$field] = $message;
+
+        return $this;
+    }
+}

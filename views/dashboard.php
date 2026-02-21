@@ -5,7 +5,7 @@ require_once asset('views/components/nav.php');
 require_once asset('views/components/header.php');
 require_once asset('views/components/note_card.php');
 require_once asset('views/components/pagination.php');
-
+require_once asset('views/components/modal.php');
 ?>
 
 <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -13,10 +13,10 @@ require_once asset('views/components/pagination.php');
         <?php require_once asset('views/components/search.php') ?>
         <?php require_once asset('views/components/filter.php') ?>
     </div>
-    <?php $data ? NoteCard($data['notes']) : require_once asset('views/components/empty_state.php') ?>
+    <?php $data['notes'] ? NoteCard($data['notes']) : require_once asset('views/components/empty_state.php') ?>
     <?php require_once asset('views/components/add_card.php') ?>
-    <?php require_once asset('views/components/modal.php') ?>
-    <?php ($data['pagination']) ? Pagination($data['pagination']) : '' ?>
+    <?php DeleteModal('note'); ?>
+    <?php isset($data['pagination']) ? Pagination($data['pagination']) : '' ?>
 </div>
 
 <?php

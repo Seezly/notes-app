@@ -12,27 +12,17 @@
                             </svg>
                         </div>
                         <div class="w-full mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 id="dialog-title" class="text-base font-semibold text-white">Add New Note</h3>
-                            <form id="save-note-form" class="mt-6 gap-3 flex flex-col w-full">
+                            <h3 id="dialog-title" class="text-base font-semibold text-white">Add New Tag</h3>
+                            <form id="save-tag-form" class="mt-6 gap-3 flex flex-col w-full">
                                 <input type="hidden" name="_method" value="POST">
                                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                <input type="text" name="name" id="name" placeholder="Note Title" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                <input type="date" name="date" id="date" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                <select name="priority" id="priority" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-                                <select name="tag_id" id="note_tag" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                    <option value="">Select a tag</option>
-                                </select>
-                                <textarea name="body" id="body" placeholder="Task list? Reminder? Write something..." class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-500"></textarea>
+                                <input type="text" name="name" id="name" placeholder="Tag Name" class="w-full rounded-md border-0 bg-gray-700/50 px-2 py-1 text-sm text-white shadow-sm ring-1 ring-inset ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                             </form>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button type="button" command="close" commandfor="dialog" id="btn-save-note" data-action="add" class=" inline-flex w-full justify-center rounded-md bg-purple-900 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-800 sm:ml-3 sm:w-auto transition duration-200">Add</button>
+                    <button type="button" command="close" commandfor="dialog" id="btn-save-tag" data-action="add" class=" inline-flex w-full justify-center rounded-md bg-purple-900 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-800 sm:ml-3 sm:w-auto transition duration-200">Add</button>
                     <button type="button" command="close" commandfor="dialog" class="mt-3 inline-flex w-full justify-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 sm:mt-0 sm:w-auto transition duration-200">Cancel</button>
                 </div>
             </el-dialog-panel>

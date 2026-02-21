@@ -1,6 +1,6 @@
 </main>
 </div>
-<script src="js/index.js" type="module"></script>
+<?= "<script src='./js" . (getUri() === '/dashboard' ? '/notes' : getUri()) . ".js' type='module'></script>" ?>
 </body>
 
 </html>

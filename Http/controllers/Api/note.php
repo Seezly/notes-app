@@ -12,7 +12,7 @@ switch ($method) {
         break;
 
     case 'DELETE':
-        return Note::delete($connection, json_decode(file_get_contents('php://input'), true)['id'], json_decode(file_get_contents('php://input'), true)['csrd_token']);
+        return Note::delete($connection, json_decode(file_get_contents('php://input'), true)['id'], json_decode(file_get_contents('php://input'), true)['csrf_token']);
         break;
 
     case 'PUT':

@@ -7,3 +7,11 @@ export const formData = (form) => {
     }
     return obj;
 };
+
+export const getTags = async () => {
+    let call = await fetch("/api/tags");
+    let res = await call.json();
+    let data = res.data.tags;
+
+    return data;
+};

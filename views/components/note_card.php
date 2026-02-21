@@ -7,7 +7,7 @@ function NoteCard($notes)
         'medium' => 'bg-yellow-100 text-yellow-800',
         'high' => 'bg-red-100 text-red-800',
     ];
-    echo "<div class='flex justify-between items-center gap-8'>";
+    echo "<div class='flex justify-start flex-wrap items-center gap-[5%]'>";
     foreach ($notes as $note) {
         echo "
                 <div class='bg-white w-full sm:max-w-[30%] rounded-lg shadow-md p-4 mb-4'>

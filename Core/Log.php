@@ -16,6 +16,6 @@ class Log
             "endpoint" => $endpoint
         ];
 
-        return $connection->insert($sql, $args);
+        $connection->insert($sql, $args);
     }
 }

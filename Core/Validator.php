@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use function PHPSTORM_META\type;
+
 class Validator
 {
     public static function string($value, $min = 0, $max = PHP_INT_MAX)
@@ -26,5 +28,11 @@ class Validator
         }
 
         return true;
+    }
+
+    public static function date($date, $format = 'Y-m-d')
+    {
+        $d = \DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) === $date;
     }
 }

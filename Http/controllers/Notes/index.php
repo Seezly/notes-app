@@ -77,6 +77,7 @@ if (isset($params['id']) && $params['id'] !== null) {
     exit();
 }
 
+
 $num_rows = $connection->query($sql, $bindings)->getRowCount();
 
 $sql .= " LIMIT {$limit} OFFSET {$offset}";
@@ -105,7 +106,19 @@ $data['notes'] = $note;
 
 Log::create($connection, 'get', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
 
-return view('dashboard', [
-    'title' => 'Dashboard',
-    'data' => $data
+if (getUri() === "/api/notes") {
+    header('Content-Type: application/json');
+
+    http_response_code(200);
+    echo json_encode([
+        'success' => $note ? true : false,
+        'data' => $data,
+    ]);
+    exit();
+}
+
+return view('notes', [
+    'title' => 'Notes',
+    'data' => $data,
+    'sql' => $sql
 ]);
