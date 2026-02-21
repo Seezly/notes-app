@@ -16,7 +16,7 @@ require_once asset('views/components/pagination.php');
     <?php $data ? NoteCard($data['notes']) : require_once asset('views/components/empty_state.php') ?>
     <?php require_once asset('views/components/add_card.php') ?>
     <?php require_once asset('views/components/modal.php') ?>
-    <?php ($data['num_pages']) ? Pagination($data['num_pages']) : '' ?>
+    <?php ($data['pagination']) ? Pagination($data['pagination']) : '' ?>
 </div>
 
 <?php

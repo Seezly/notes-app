@@ -135,8 +135,20 @@ class Note
 
         $num_pages = ceil($num_rows / $limit);
 
+        $window = 2;
+
+        $start_page = max(1, $page - $window);
+
+        $end_page = min($num_pages, $page + $window);
+
         if ($num_pages >= 1) {
-            $data['num_pages'] = $num_pages;
+            $data['pagination'] = [
+                'num_pages' => $num_pages,
+                'window' => $window,
+                'current_page' => $page,
+                'start_page' => $start_page,
+                'end_page' => $end_page
+            ];
         }
 
         $data['notes'] = $note;
