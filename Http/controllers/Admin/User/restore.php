@@ -1,15 +1,14 @@
 <?php
 
-use App\Forms\TagForm;
 use App\Middlewares\Auth;
 use Core\Session;
 use Core\Log;
 
 header('Content-Type: application/json');
 
-$tag_data = json_decode(file_get_contents('php://input'), true);
+$user_input = json_decode(file_get_contents("php://input"), true);
 
-if (!Session::validateCsrf($tag_data['csrf_token'])) {
+if (!Session::validateCsrf($user_input['csrf_token'])) {
     http_response_code(403);
     echo json_encode([
         'success' => false,
@@ -18,7 +17,7 @@ if (!Session::validateCsrf($tag_data['csrf_token'])) {
     exit();
 }
 
-if (!Auth::user()) {
+if (!Auth::isAdmin()) {
     http_response_code(403);
     echo json_encode([
         'success' => false,
@@ -27,23 +26,19 @@ if (!Auth::user()) {
     exit();
 }
 
-$form = (new TagForm($tag_data))->validate($tag_data);
+$sql = "UPDATE users SET deleted_at = NULL WHERE id = :id";
 
-$sql = "UPDATE tags SET name = :name WHERE id = :id AND user_id = :user_id";
-$tag = $connection->update($sql, [
-    'name' => $tag_data['name'],
-    'id' => $tag_data['id'],
-    'user_id' => Auth::user(),
+$user = $connection->query($sql, [
+    'id' => $user_input['user_id']
 ]);
 
 Session::renewCsrf();
 
 Log::create($connection, 'edit', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
 
-http_response_code(201);
+http_response_code(200);
 echo json_encode([
-    'success' => $tag ? true : false,
-    'data' => $tag,
+    'success' => $user ? true : false
 ]);
 
 exit();

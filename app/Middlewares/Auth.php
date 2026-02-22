@@ -32,6 +32,10 @@ class Auth
         if (!static::user()) {
             redirect('/login');
         }
+
+        if (static::isAdmin() && getURI() === "/dashboard") {
+            redirect('/admin');
+        }
     }
 
     public function login($email, $password, $token)
@@ -46,7 +50,7 @@ class Auth
             exit();
         }
 
-        $sql = "SELECT * FROM users WHERE email = :email";
+        $sql = "SELECT * FROM users WHERE email = :email AND deleted_at IS NULL";
         $user = $this->connection->query($sql, [
             'email' => $email,
         ])->getOne();

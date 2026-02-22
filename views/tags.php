@@ -12,6 +12,7 @@ require_once asset('views/components/modal.php');
     <?php $data['tags'] ? TagCard($data['tags']) : require_once asset('views/components/empty_state.php') ?>
     <?php require_once asset('views/components/add_tag.php') ?>
     <?php DeleteModal('tag'); ?>
+    <?php !\App\Middlewares\Auth::isAdmin() ?? RestoreModal('tag'); ?>
     <?php isset($data['pagination']) ? Pagination($data['pagination']) : '' ?>
 </div>
 

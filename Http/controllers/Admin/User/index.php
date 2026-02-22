@@ -1,7 +1,6 @@
 <?php
 
 use App\Middlewares\Auth;
-use Core\Session;
 use Core\Log;
 
 if (!Auth::isAdmin()) {

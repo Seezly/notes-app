@@ -1,5 +1,6 @@
 <?php
 
+use App\Forms\NoteForm;
 use App\Middlewares\Auth;
 use Core\Session;
 use Core\Log;
@@ -25,6 +26,8 @@ if (!Auth::user()) {
     ]);
     exit();
 }
+
+$form = (new NoteForm($note_data))->validate($note_data);
 
 $sql = "UPDATE notes SET name = :name, priority = :priority, date = :date, body = :body WHERE id = :id AND user_id = :user_id";
 $note = $connection->update($sql, [

@@ -6,6 +6,9 @@ const $btnDeleteAction = document.querySelector("[data-action='delete']");
 const $btnDeleteNote = document.querySelectorAll(
     "[commandfor='delete-note-confirm']",
 );
+const $btnRestoreNotes = document.querySelectorAll(
+    "[commandfor='restore-note-confirm']",
+);
 
 const $formSearch = document.getElementById("search");
 const $formFilterTag = document.getElementById("filter_tag");
@@ -17,6 +20,12 @@ const $tagSelect = document.getElementById("note_tag");
 const $priorityFilter = document.getElementById("priority_f");
 
 const filters = new URLSearchParams(window.location.search);
+
+document.getElementById("save-note-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    $btnSaveNote.click();
+});
 
 if ($btnSaveNote) {
     $btnSaveNote.addEventListener("click", (e) => {
@@ -142,10 +151,31 @@ if ($btnDeleteAction) {
     });
 }
 
-if ($formSearch) {
-    // Handle form send
-    //pass query parameters
-    //reload the page maintaining other query params
+if ($btnRestoreNotes) {
+    $btnRestoreNotes.forEach(($btn) => {
+        $btn.addEventListener("click", (e) => {
+            const id = $btn.dataset.id;
+            const token = $btn.dataset.token;
+
+            fetch("/api/notes", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: id,
+                    csrf_token: token,
+                    _method: "PATCH",
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                });
+        });
+    });
 }
 
 if ($formFilterTag) {

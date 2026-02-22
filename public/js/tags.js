@@ -7,6 +7,10 @@ const $btnDeleteTag = document.querySelectorAll(
     "[commandfor='delete-tag-confirm']",
 );
 
+const $btnRestoreTags = document.querySelectorAll(
+    "[commandfor='restore-tag-confirm']",
+);
+
 document.getElementById("save-tag-form").addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -119,5 +123,32 @@ if ($btnDeleteAction) {
             .catch((err) => {
                 console.error(err);
             });
+    });
+}
+
+if ($btnRestoreTags) {
+    $btnRestoreTags.forEach(($btn) => {
+        $btn.addEventListener("click", (e) => {
+            const id = $btn.dataset.id;
+            const token = $btn.dataset.token;
+
+            fetch("/api/tags", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: id,
+                    csrf_token: token,
+                    _method: "PATCH",
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                });
+        });
     });
 }

@@ -13,8 +13,11 @@ function UserCard($users)
                         <p class='mb-2'><span class='font-medium'>Email</span>: " . (htmlspecialchars($user['email']) ?? '') . "</p>
                         <p class='mb-2'><span class='font-medium'>Created at</span>: " . (htmlspecialchars($user['created_at']) ?? '') . "</p>
                     </div>
-                    <div class='mt-4 flex space-x-2 relative'>
-                        <span class='inline-block px-2 py-1 text-xs font-semibold rounded-full bg-indigo-500 text-white absolute bottom-0 right-0'>" . ($user['is_admin'] == 1 ? 'Admin' : 'User') . "</span>
+                    <div class='mt-4 flex space-x-2 relative'>";
+        if ($user['deleted_at'] !== null) {
+            echo "<button command='show-modal' commandfor='restore-user-confirm' class='bg-red-500 hover:bg-red-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($user['id']) . "' data-token='" . $_SESSION['csrf_token'] . "'>Restore</button>";
+        }
+        echo "<span class='inline-block px-2 py-1 text-xs font-semibold rounded-full bg-indigo-500 text-white absolute bottom-0 right-0'>" . ($user['is_admin'] == 1 ? 'Admin' : 'User') . "</span>
                     </div>
                 </div>";
     }

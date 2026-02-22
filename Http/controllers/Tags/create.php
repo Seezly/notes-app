@@ -1,6 +1,6 @@
 <?php
 
-use Http\Models\Note;
+use App\Forms\TagForm;
 use App\Middlewares\Auth;
 use Core\Session;
 use Core\Log;
@@ -26,6 +26,8 @@ if (!Auth::user()) {
     ]);
     exit();
 }
+
+$form = (new TagForm($tag_data))->validate($tag_data);
 
 $sql = "INSERT INTO tags (name, user_id) VALUES (:name, :user_id)";
 

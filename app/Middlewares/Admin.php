@@ -17,9 +17,5 @@ class Admin extends Auth
         if (!static::isAdmin() && static::user()) {
             redirect('/dashboard');
         }
-
-        if (getURI() === "/dashboard") {
-            redirect('/admin');
-        }
     }
 }

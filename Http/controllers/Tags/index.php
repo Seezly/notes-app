@@ -1,7 +1,6 @@
 <?php
 
 use App\Middlewares\Auth;
-use Core\Session;
 use Core\Log;
 
 $params = $_GET;
@@ -28,12 +27,12 @@ if (!Auth::user()) {
     exit();
 }
 
-$sql = "SELECT *";
+$sql = "SELECT DISTINCT t.*";
 
 $bindings = [];
 
 if (!Auth::isAdmin()) {
-    $sql .= " FROM tags WHERE user_id = :user_id AND deleted_at IS NULL";
+    $sql .= " FROM tags t WHERE user_id = :user_id AND deleted_at IS NULL";
     $bindings['user_id'] = Auth::user();
 } else {
     $sql .= ", u.username AS username, u.id AS user_id FROM tags t LEFT JOIN users u ON t.user_id = u.id";

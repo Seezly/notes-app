@@ -16,6 +16,7 @@ require_once asset('views/components/modal.php');
     <?php $data['notes'] ? NoteCard($data['notes']) : require_once asset('views/components/empty_state.php') ?>
     <?php require_once asset('views/components/add_card.php') ?>
     <?php DeleteModal('note'); ?>
+    <?php !\App\Middlewares\Auth::isAdmin() ?? RestoreModal('note'); ?>
     <?php isset($data['pagination']) ? Pagination($data['pagination']) : '' ?>
 </div>
 

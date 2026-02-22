@@ -17,6 +17,9 @@ function TagCard($tags)
                     ";
         }
         if (App\Middlewares\Auth::isAdmin()) {
+            if ($tag['deleted_at'] !== null) {
+                echo "<button command='show-modal' commandfor='restore-tag-confirm' class='bg-red-500 hover:bg-red-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($tag['id']) . "' data-token='" . $_SESSION['csrf_token'] . "'>Restore</button>";
+            }
             echo "<span class='inline-block px-2 py-1 text-xs font-semibold rounded-full bg-indigo-500 text-white'>" . htmlspecialchars($tag['username']) . " - " . htmlspecialchars($tag['user_id']) . "</span>";
         }
         echo "

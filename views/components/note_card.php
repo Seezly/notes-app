@@ -27,6 +27,9 @@ function NoteCard($notes)
                     ";
         }
         if (App\Middlewares\Auth::isAdmin()) {
+            if ($note['deleted_at'] !== null) {
+                echo "<button command='show-modal' commandfor='restore-note-confirm' class='bg-red-500 hover:bg-red-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($note['id']) . "' data-token='" . $_SESSION['csrf_token'] . "'>Restore</button>";
+            }
             echo "<span class='inline-block px-2 py-1 text-xs font-semibold rounded-full bg-indigo-500 text-white'>" . htmlspecialchars($note['username']) . " - " . htmlspecialchars($note['user_id']) . "</span>";
         }
         echo "

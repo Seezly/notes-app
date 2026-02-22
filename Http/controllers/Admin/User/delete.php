@@ -4,11 +4,11 @@ use App\Middlewares\Auth;
 use Core\Session;
 use Core\Log;
 
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 
-$tag_data = json_decode(file_get_contents('php://input'), true);
+$user_info = $_POST;
 
-if (!Session::validateCsrf($tag_data['csrf_token'])) {
+if (!Session::validateCsrf($user_info['csrf_token'])) {
     http_response_code(403);
     echo json_encode([
         'success' => false,
@@ -26,22 +26,16 @@ if (!Auth::user()) {
     exit();
 }
 
-$sql = "UPDATE tags SET deleted_at = :date WHERE id = :id AND user_id = :user_id";
-
-$tag = $connection->query($sql, [
+$sql = "UPDATE users SET deleted_at = :date WHERE id = :id";
+$user = $connection->delete($sql, [
     'date' => date('Y-m-d H:i:s'),
-    'id' => $tag_data['id'],
-    'user_id' => Auth::user()
+    'id' => Auth::user(),
 ]);
 
 Session::renewCsrf();
 
 Log::create($connection, 'delete', Auth::user(), $_SERVER['REMOTE_ADDR'], getURI());
 
-http_response_code(200);
-echo json_encode([
-    'success' => $tag ? true : false,
-    'data' => $tag
-]);
+Auth::logout();
 
 exit();

@@ -1,7 +1,6 @@
 <?php
 
 use App\Middlewares\Auth;
-use Core\Session;
 use Core\Log;
 
 $params = $_GET;
@@ -33,7 +32,7 @@ $sql = "SELECT n.*";
 $bindings = [];
 
 if (!Auth::isAdmin()) {
-    $sql .= ", t.name AS tag FROM notes n JOIN tags t ON n.tag_id = t.id WHERE n.user_id = :user_id AND n.deleted_at IS NULL";
+    $sql .= ", t.name AS tag FROM notes n LEFT JOIN tags t ON n.tag_id = t.id WHERE n.user_id = :user_id AND n.deleted_at IS NULL";
     $bindings['user_id'] = Auth::user();
 } else {
     $sql .= ", t.name AS tag, u.username AS username, u.id AS user_id FROM notes n LEFT JOIN tags t ON n.tag_id = t.id LEFT JOIN users u ON n.user_id = u.id";
