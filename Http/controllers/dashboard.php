@@ -28,19 +28,15 @@ if (!Auth::user()) {
     exit();
 }
 
-$sql = "SELECT DISTINCT n.* FROM notes n";
+$sql = "SELECT n.*";
 
-$bindings = [
-    'user_id' => Auth::user(),
-];
-
-if (isset($params['tag_f'])) {
-    $sql .= "
-            JOIN tags t ON n.tag_id = t.id";
-}
+$bindings = [];
 
 if (!Auth::isAdmin()) {
-    $sql .= " WHERE n.user_id = :user_id AND n.deleted_at IS NULL";
+    $sql .= ", t.name AS tag FROM notes n JOIN tags t ON n.tag_id = t.id WHERE n.user_id = :user_id AND n.deleted_at IS NULL";
+    $bindings['user_id'] = Auth::user();
+} else {
+    $sql .= ", t.name AS tag, u.username AS username, u.id AS user_id FROM notes n LEFT JOIN tags t ON n.tag_id = t.id LEFT JOIN users u ON n.user_id = u.id";
 }
 
 if (isset($params['tag_f'])) {

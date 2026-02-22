@@ -110,7 +110,7 @@ class Statistics
             'value' => number_format($data[0]["percentage_{$table}_with_{$table_two}"], 2) ?? null,
             'first_period_value' => $data[0]["percentage_{$table}_with_{$table_two}_fp"] ?? null,
             'before_first_period_value' => $data[0]["percentage_{$table}_with_{$table_two}_bfp"] ?? null,
-            'percentage' => ($data[0]["percentage_{$table}_with_{$table_two}"] > 0) ? round((($data[0]["percentage_{$table}_with_{$table_two}_fp"] - $data[0]["percentage_{$table}_with_{$table_two}_bfp"]) / $data[0]["avg"]) * 100, 2) : 0,
+            'percentage' => ($data[0]["percentage_{$table}_with_{$table_two}"] > 0) ? round((($data[0]["percentage_{$table}_with_{$table_two}_fp"] - $data[0]["percentage_{$table}_with_{$table_two}_bfp"]) / $data[0]["percentage_{$table}_with_{$table_two}"]) * 100, 2) : 0,
             'trend' => ($data[0]["percentage_{$table}_with_{$table_two}_fp"] >= $data[0]["percentage_{$table}_with_{$table_two}_bfp"]) ? 'up' : 'down',
             'period' => $first_period,
             'period_unit' => $period_unit

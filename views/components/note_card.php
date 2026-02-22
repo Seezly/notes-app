@@ -19,9 +19,18 @@ function NoteCard($notes)
                     <div class='mt-2'>
                         <p class='text-gray-700'>" . (htmlspecialchars($note['body']) ?? '') . "</p>
                     </div>
-                    <div class='mt-4 flex space-x-2'>
-                        <button command='show-modal' commandfor='dialog' class='bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($note['id']) . "' data-action='edit'>Edit</button>
+                    <div class='mt-4 flex space-x-2 relative'>
+                    ";
+        if (!App\Middlewares\Auth::isAdmin()) {
+            echo "<button command='show-modal' commandfor='dialog' class='bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($note['id']) . "' data-action='edit'>Edit</button>
                         <button command='show-modal' commandfor='delete-note-confirm' class='bg-red-500 hover:bg-red-700 text-white font-medium py-1 px-2 rounded' data-id='" . htmlspecialchars($note['id']) . "'>Delete</button>
+                    ";
+        }
+        if (App\Middlewares\Auth::isAdmin()) {
+            echo "<span class='inline-block px-2 py-1 text-xs font-semibold rounded-full bg-indigo-500 text-white'>" . htmlspecialchars($note['username']) . " - " . htmlspecialchars($note['user_id']) . "</span>";
+        }
+        echo "
+                        <span class='inline-block px-2 py-1 text-xs font-semibold rounded-full bg-indigo-500 text-white flex absolute bottom-0 right-0'>" . htmlspecialchars($note['tag']) . "</span>
                     </div>
                 </div>";
     }

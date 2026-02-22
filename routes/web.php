@@ -4,7 +4,7 @@
     * Web Routes 
 */
 
-$router->get('/dashboard', 'dashboard.php')->middleware('auth');
+$router->get('/dashboard', 'dashboard.php')->middleware('auth')->middleware('admin');
 
 $router->get('/notes', 'Notes/index.php')->middleware('auth');
 $router->get('/api/notes', 'Notes/index.php')->middleware('auth');
@@ -27,5 +27,4 @@ $router->post('/register', 'Auth/register.php')->middleware('guest');
 $router->delete('/logout', 'Auth/logout.php');
 
 $router->get('/admin', 'Admin/admin.php')->middleware('admin');
-$router->get('/admin/notes', 'Admin/admin.php')->middleware('admin');
-$router->get('/admin/tags', 'Admin/admin.php')->middleware('admin');
+$router->get('/users', 'Admin/User/index.php')->middleware('admin');

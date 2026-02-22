@@ -28,14 +28,15 @@ if (!Auth::user()) {
     exit();
 }
 
-$sql = "SELECT * FROM tags";
+$sql = "SELECT *";
 
-$bindings = [
-    'user_id' => Auth::user()
-];
+$bindings = [];
 
 if (!Auth::isAdmin()) {
-    $sql .= "  WHERE user_id = :user_id AND deleted_at IS NULL";
+    $sql .= " FROM tags WHERE user_id = :user_id AND deleted_at IS NULL";
+    $bindings['user_id'] = Auth::user();
+} else {
+    $sql .= ", u.username AS username, u.id AS user_id FROM tags t LEFT JOIN users u ON t.user_id = u.id";
 }
 
 if (isset($params['id']) && $params['id'] !== null) {

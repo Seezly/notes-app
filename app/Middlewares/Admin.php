@@ -10,8 +10,16 @@ class Admin extends Auth
     {
         parent::handle();
 
-        if (!static::isAdmin()) {
+        if (!static::isAdmin() && !static::user()) {
             redirect('/login');
+        }
+
+        if (!static::isAdmin() && static::user()) {
+            redirect('/dashboard');
+        }
+
+        if (getURI() === "/dashboard") {
+            redirect('/admin');
         }
     }
 }

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ->login(
             $attributes['email'],
             $attributes['password'],
-            $attributes['csrf_token']
+            $attributes['token']
         );
 
     if (!$auth) {
