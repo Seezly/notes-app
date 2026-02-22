@@ -12,7 +12,7 @@ use Core\Session;
 
 Session::start();
 
-$connection = new Database('localhost', 'root', '', 'notes_app');
+$connection = new Database($_ENV['DB_HOST'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD'], $_ENV['DB_NAME']);
 
 $router = new Router();
 
