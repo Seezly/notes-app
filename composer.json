@@ -12,7 +12,8 @@
         "psr-4": {
             "Core\\": "Core/",
             "App\\": "app/",
-            "Http\\": "Http/"
+            "Http\\": "Http/",
+            "Tests\\": "tests/"
         }
     },
     "require-dev": {

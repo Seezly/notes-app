@@ -31,7 +31,7 @@ Then, please do the following:
 `composer install` (this will install all the dependencies)
 
 **Please make sure you have a MySQL server instance running when prompting this command**
-`composer run migrations` (this will create the db, tables, and seed them with data)
+At the root directory of this repo is a file named `db.sql`. Please import it on your favorite Database Administration Tool.
 
 `composer run dev` (this will turn up the server locally)
 
